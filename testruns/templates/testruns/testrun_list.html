@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Wszystkie Test Runy</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Wszystkie Przebiegi Testów</h2>
+        <div>
+            <a href="{% url 'home' %}" class="btn btn-outline-secondary me-2">Wróć do Dashboardu</a>
+            <a href="{% url 'testrun_new' %}" class="btn btn-success">+ Nowy Test Run</a>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nazwa Runu</th>
+                        <th>Projekt</th>
+                        <th>Status</th>
+                        <th>Data Utworzenia</th>
+                        <th>Akcje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for run in testruns %}
+                    <tr>
+                        <td>#{{ run.id }}</td>
+                        <td>
+                            <strong>{{ run.name }}</strong>
+                        </td>
+                        <td>{{ run.project.name }}</td>
+                        <td>
+                            {% if run.status == 'active' %}
+                                <span class="badge bg-primary">Aktywny</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Zakończony</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ run.created_at|date:"d.m.Y H:i" }}</td>
+                        <td>
+                            <a href="{% url 'run_detail' run.id %}" class="btn btn-sm btn-outline-primary">Szczegóły</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center py-4">Brak test runów.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
