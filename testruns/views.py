@@ -1,4 +1,4 @@
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import DetailView, CreateView, ListView
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.http import require_POST
@@ -106,7 +106,8 @@ def fail_with_comment(request, pk):
 
     execution.save()
 
-    return redirect('run_detail', pk=execution.test_run.id)
+    base_url = reverse('run_detail', args=[execution.test_run.id])
+    return redirect(f"{base_url}?expanded={execution.id}")
 
 
 @require_POST
@@ -123,4 +124,5 @@ def block_with_comment(request, pk):
 
     execution.save()
 
-    return redirect('run_detail', pk=execution.test_run.id)
+    base_url = reverse('run_detail', args=[execution.test_run.id])
+    return redirect(f"{base_url}?expanded={execution.id}")

@@ -13,7 +13,7 @@
             <h4 class="mb-0">{% if is_edit %}Edycja: {{ object.title }}{% else %}Nowy Przypadek{% endif %}</h4>
         </div>
         <div class="card-body">
-            <form method="post">
+            <form method="post" action="?next={{ request.GET.next }}">
                 {% csrf_token %}
 
                 {% if form.errors %}

@@ -9,7 +9,16 @@ class TestCaseUpdateView(UpdateView):
     model = TestCase
     form_class = TestCaseForm
     template_name = 'testcases/testcase_form.html'
-    success_url = reverse_lazy('testcase_list')
+
+    def get_success_url(self):
+        # 1. Sprawdź czy w URL jest parametr ?next=/runs/5/
+        next_url = self.request.GET.get('next')
+        if next_url:
+            return next_url
+
+        # 2. Jeśli nie ma, wróć do domyślnej listy
+        return reverse_lazy('testcase_list')
+
 
 # 1. Widok Listy (Repozytorium)
 class TestCaseListView(ListView):
