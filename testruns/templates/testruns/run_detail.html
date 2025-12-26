@@ -34,7 +34,13 @@
 
     <div class="card shadow-sm">
         <div class="card-body">
-            <h5 class="card-title text-muted mb-3">Lista przypadków testowych</h5>
+            <!-- Nagłówek i przyciski akcji masowej -->
+            <div class="d-flex align-items-center mb-3">
+                <h5 class="card-title text-muted mb-0">Lista przypadków testowych</h5>
+
+
+            </div>
+
 
             <!-- Dodaj klasę 'table-hover', żeby kursor sugerował klikalność -->
             <table class="table table-hover align-middle">
@@ -44,7 +50,12 @@
                         <th style="width: 40%">Tytuł Przypadku <small class="text-muted fw-normal ms-2">(kliknij wiersz, aby rozwinąć)</small></th>
                         <th style="width: 10%">Priorytet</th>
                         <th style="width: 10%">Status</th>
-                        <th style="width: 35%">Akcje</th>
+                        <th style="width: 30%">Akcje</th>
+                        <th style="width: 5%"><button type="button" id="toggleAllBtn" class="btn btn-sm btn-link text-decoration-none p-0 border-0"
+                        onclick="toggleAllDetailsSmart()"
+                        data-bs-toggle="tooltip" title="Rozwiń/Zwiń wszystkie">
+                    ⬇
+                </button></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -287,6 +298,37 @@
             }
         }
     });
+
+let areAllExpanded = false;
+
+    function toggleAllDetailsSmart() {
+        const btn = document.getElementById('toggleAllBtn');
+        const allCollapses = document.querySelectorAll('tr[id^="details-"]');
+
+        areAllExpanded = !areAllExpanded;
+
+        allCollapses.forEach(el => {
+            const bsCollapse = new bootstrap.Collapse(el, { toggle: false });
+            if (areAllExpanded) {
+                bsCollapse.show();
+            } else {
+                bsCollapse.hide();
+            }
+        });
+
+        // Zmiana samej ikony
+        if (areAllExpanded) {
+            btn.innerHTML = '⬆'; // Strzałka w górę
+            btn.setAttribute('data-bs-original-title', 'Zwiń wszystkie'); // Aktualizacja tooltipa
+        } else {
+            btn.innerHTML = '⬇'; // Strzałka w dół
+            btn.setAttribute('data-bs-original-title', 'Rozwiń wszystkie');
+        }
+
+        // Odśwież tooltip (jeśli jest otwarty)
+        const tooltip = bootstrap.Tooltip.getInstance(btn);
+        if (tooltip) tooltip.hide();
+    }
 </script>
 
 </body>
