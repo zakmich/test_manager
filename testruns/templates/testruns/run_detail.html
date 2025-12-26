@@ -102,34 +102,34 @@
                             {% else %}
                                 <span class="badge bg-secondary">UNTESTED</span>
                             {% endif %}
-                        </td>
-                        <!-- Kliknięcie w przyciski NIE powinno zwijać wiersza, więc dodajemy event.stopPropagation w JS lub po prostu trzymamy je osobno.
-                             W prostym HTML kliknięcie w przycisk i tak zadziała jako submit formularza. -->
                         <td>
                             <div class="btn-group" role="group" onclick="event.stopPropagation()">
-                                <!-- PASS (bez zmian) -->
+                                <!-- PASS -->
                                 <form action="{% url 'change_status' exec.id 'pass' %}" method="POST" style="display:inline;">
                                     {% csrf_token %}
-                                    <button type="submit" class="btn btn-sm btn-success" title="Pass">✔</button>
+                                    <button type="submit" class="btn btn-sm btn-success" data-bs-toggle="tooltip" title="Pass">✔</button>
                                 </form>
 
-                                <!-- FAIL - otwiera czerwony modal -->
-                                <button type="button" class="btn btn-sm btn-danger"
-                                        data-bs-toggle="modal" data-bs-target="#failModal{{ exec.id }}">
-                                    ✘
-                                </button>
+                                <!-- FAIL (we wrapperze dla tooltipa) -->
+                                <span data-bs-toggle="tooltip" title="Fail">
+                                    <button type="button" class="btn btn-sm btn-danger"
+                                            data-bs-toggle="modal" data-bs-target="#failModal{{ exec.id }}">
+                                        ✘
+                                    </button>
+                                </span>
 
-                                <!-- BLOCKED - otwiera pomarańczowy modal -->
-                                <button type="button" class="btn btn-sm btn-warning"
-                                        data-bs-toggle="modal" data-bs-target="#blockModal{{ exec.id }}">
-                                    ⛔
-                                </button>
+                                <!-- BLOCKED (we wrapperze dla tooltipa) -->
+                                <span data-bs-toggle="tooltip" title="Blocked">
+                                    <button type="button" class="btn btn-sm btn-warning"
+                                            data-bs-toggle="modal" data-bs-target="#blockModal{{ exec.id }}">
+                                        ⛔
+                                    </button>
+                                </span>
 
-
-                                <!-- RESET (bez zmian) -->
+                                <!-- RESET -->
                                 <form action="{% url 'change_status' exec.id 'unt' %}" method="POST" style="display:inline;">
                                     {% csrf_token %}
-                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="Reset">↺</button>
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary" data-bs-toggle="tooltip" title="Reset">↺</button>
                                 </form>
                             </div>
                         </td>
