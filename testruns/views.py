@@ -23,19 +23,26 @@ class TestRunDetailView(DetailView):
         context['executions'] = self.object.executions.select_related('test_case').all()
         return context
 
-@require_POST  # Zabezpieczenie: ta funkcja zadziała tylko przy wysłaniu formularza
+
+@require_POST
 def change_execution_status(request, pk, new_status):
-    # 1. Pobierz konkretne wykonanie testu (lub zwróć błąd 404 jeśli nie istnieje)
     execution = get_object_or_404(TestExecution, pk=pk)
 
-    # 2. Zmień status (tylko jeśli jest poprawny)
     valid_statuses = ['pass', 'fail', 'blck', 'unt']
     if new_status in valid_statuses:
         execution.status = new_status
+
+        # --- NOWOŚĆ: Czyszczenie komentarza przy resecie ---
+        if new_status == 'unt':
+            execution.comment = ""  # Usuń stary komentarz
+        # ---------------------------------------------------
+
         execution.save()
 
-    # 3. Wróć do strony szczegółów runu
-    return redirect('run_detail', pk=execution.test_run.id)
+    # Dodajmy też 'expanded', żeby po resecie widzieć efekt (zamknięty lub otwarty wiersz)
+    # Możesz chcieć, żeby po resecie wiersz pozostał otwarty, aby upewnić się, że jest "czysty"
+    base_url = reverse('run_detail', args=[execution.test_run.id])
+    return redirect(f"{base_url}?expanded={execution.id}")
 
 
 class TestRunCreateView(CreateView):
