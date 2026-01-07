@@ -15,20 +15,3 @@ sqlparse==0.5.3
 tzdata==2025.2
 virtualenv==20.33.0
 whitenoise==6.11.0
-
-import os
-# ... (reszta importów)
-
-# 1. Zezwól na hostowanie na Renderze
-ALLOWED_HOSTS = ['*']  # Na początek '*', docelowo np. ['twoja-nazwa.onrender.com']
-
-# 2. Skonfiguruj obsługę plików statycznych (WhiteNoise)
-MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware', # <--- DODAJ TĘ LINIĘ ZARAZ PO SecurityMiddleware
-    # ...
-]
-
-# 3. Dodaj konfigurację folderu static
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
