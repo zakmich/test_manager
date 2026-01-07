@@ -1,0 +1,34 @@
+asgiref==3.9.1
+certifi==2025.8.3
+distlib==0.4.0
+Django==5.2.4
+filelock==3.18.0
+gunicorn==23.0.0
+packaging==25.0
+pipenv==2025.0.4
+platformdirs==4.3.8
+pyasn1==0.6.1
+PySimpleGUI==5.0.10
+rsa==4.9.1
+setuptools==80.9.0
+sqlparse==0.5.3
+tzdata==2025.2
+virtualenv==20.33.0
+whitenoise==6.11.0
+
+import os
+# ... (reszta importów)
+
+# 1. Zezwól na hostowanie na Renderze
+ALLOWED_HOSTS = ['*']  # Na początek '*', docelowo np. ['twoja-nazwa.onrender.com']
+
+# 2. Skonfiguruj obsługę plików statycznych (WhiteNoise)
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware', # <--- DODAJ TĘ LINIĘ ZARAZ PO SecurityMiddleware
+    # ...
+]
+
+# 3. Dodaj konfigurację folderu static
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
